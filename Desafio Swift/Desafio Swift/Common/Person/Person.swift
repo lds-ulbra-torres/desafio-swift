@@ -2,7 +2,7 @@ import Foundation
 
 struct ApiPersons: Decodable {
     let count: Int
-    let next: String
+    let next: String?
     let results: [Persons]
     
 }

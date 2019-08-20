@@ -22,7 +22,7 @@ class ViewController: UIViewController {
         apiLoad()
     }
     
-    private func apiLoad() {
+    func apiLoad() {
         guard let url = URL(string: jsonUrl) else { return }
         URLSession.shared.dataTask(with: url) { (data, response, err) in
             DispatchQueue.main.async {
@@ -35,7 +35,9 @@ class ViewController: UIViewController {
                         self.infoPersons.append(person)
                     })
                     self.tableView.reloadData()
-                    self.nextPage = apiPersons.next
+                    if apiPersons.next != nil {
+                        self.nextPage = apiPersons.next!
+                    }
                 } catch let jsonErr {
                     print("Error in serialization:", jsonErr)
                 }
@@ -58,8 +60,9 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
                 if isLoading == false {
                     limit += 10
                     jsonUrl = nextPage
-                    print(jsonUrl)
+                    
                     apiLoad()
+                    print(jsonUrl)
                     self.isLoading = true
                 }
             }
